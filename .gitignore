@@ -1,0 +1,83 @@
+# =========================
+# Build directories
+# =========================
+build/
+Build/
+cmake-build-*/
+out/
+bin/
+lib/
+
+# =========================
+# CMake generated files
+# =========================
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+Makefile
+
+# Ninja
+.ninja_deps
+.ninja_log
+build.ninja
+rules.ninja
+
+# =========================
+# Executables & binaries
+# =========================
+*.exe
+*.out
+*.app
+*.elf
+*.bin
+*.o
+*.obj
+*.so
+*.a
+*.la
+*.lo
+*.dll
+*.dylib
+*.lib
+*.pdb
+
+# Debug / profiling
+*.dSYM/
+*.stackdump
+*.gcda
+*.gcno
+*.profraw
+*.profdata
+
+# =========================
+# IDE files
+# =========================
+
+## VSCode
+.vscode/
+
+## CLion / JetBrains
+.idea/
+cmake-build-debug/
+cmake-build-release/
+
+## Vim
+*.swp
+*.swo
+*~
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Testing & coverage
+# =========================
+Testing/
+coverage/
+*.lcov
