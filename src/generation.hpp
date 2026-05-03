@@ -5,6 +5,8 @@
 #include "./tokenization.hpp"
 #include "./parser.hpp"
 
+
+/**Generate assembly from parse tree */
 class Generator{
 public:
     inline explicit Generator(NodeExit root):m_root(std::move(root)){};

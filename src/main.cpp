@@ -8,29 +8,6 @@
 #include "./parser.hpp"
 #include "./generation.hpp"
 
-// std::string tokens_to_asm(const std::vector<Token>& tokens){
-//     std::stringstream output;
-//     output << "global _start\n_start:\n";
-//     for(int i=0;i<tokens.size();i++){
-//         const Token& token = tokens.at(i);
-//         if(token.type == TokenType::exit){
-//             if(i+1<tokens.size() && tokens.at(i+1).type == TokenType::int_lit){
-//                 if(i+2<tokens.size() && tokens.at(i+2).type == TokenType::semi){
-//                     output<<"  mov rax, 60\n";
-//                     output<<"  mov rdi, "<< tokens.at(i+1).value.value()<<"\n";
-//                     output<<"  syscall";
-//                 }else{
-//                     std::cerr<<"Not end of the statement, looking for ;"<<std::endl;
-//                     exit(EXIT_FAILURE);
-//                 }
-//             }else{
-//                 std::cerr<<"Expected integer value";
-//                 exit(EXIT_FAILURE);
-//             }
-//         }
-//     }
-//     return output.str();
-// }
 
 int main(int argc, char* argv[]){
     if(argc!=2){
@@ -47,30 +24,30 @@ int main(int argc, char* argv[]){
 
     std::string contents = contents_stream.str();                           //Converting the string stream to string
 
-    Tokenizer tokenizer(std::move(contents));
+    Tokenizer tokenizer(std::move(contents));                               //A tokenizer class used for tokenizing the string
 
-    std::vector<Token> tokens =  tokenizer.tokenize();
+    std::vector<Token> tokens =  tokenizer.tokenize();                      //Creating a vector of tokens
 
-    Parser parser(std::move(tokens));
+    Parser parser(std::move(tokens));                                       //A parser class to create a parse tree from tokens
 
-    std::optional<NodeExit> tree = parser.parse();
+    std::optional<NodeExit> tree = parser.parse();                          //Creating a parse tree from tokens
 
-    if(!tree.has_value()){
+    if(!tree.has_value()){                                                  //To check if the tree has been creted
         std::cerr<<"No exit statement found"<<std::endl;
         exit(EXIT_FAILURE);
     }
 
-    Generator generator(tree.value());
+    Generator generator(tree.value());                                      //Generator class to generate assembly from the parse tree
 
     // std::cout<<tokens_to_asm(tokens)<<std::endl;
 
     {
-        std::fstream file("out.asm",std::ios::out);
+        std::fstream file("out.asm",std::ios::out);                         //Creates the output file to store the assembly code
         if(!file){
             std::cerr << "FAILED TO OPEN OUTPUT FILE\n";
             return EXIT_FAILURE;
         }
-        file<<generator.generate();
+        file<<generator.generate();                                         //Generates the assembly code
         // std::cout<<"Written";
     }
 

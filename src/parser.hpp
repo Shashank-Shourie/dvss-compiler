@@ -11,7 +11,7 @@ struct NodeExit{
 };
     
 
-
+/**  Creates a parse tree from tokens*/
 class Parser{
 public:
     inline explicit Parser(std::vector<Token> tokens) : m_tokens(std::move(tokens)){}

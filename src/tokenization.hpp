@@ -16,7 +16,7 @@ struct Token{
     std::optional<std::string> value{};
 };
 
-
+/**Creates tokens from the file */
 class Tokenizer{
 public:
     inline explicit Tokenizer(const std::string& src):m_src(src){}
