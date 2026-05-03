@@ -18,9 +18,12 @@ std::string tokens_to_asm(const std::vector<Token>& tokens){
                     output<<"  mov rdi, "<< tokens.at(i+1).value.value()<<"\n";
                     output<<"  syscall";
                 }else{
-                    std::cerr<<"Give the exit value"<<std::endl;
+                    std::cerr<<"Not end of the statement, looking for ;"<<std::endl;
                     exit(EXIT_FAILURE);
                 }
+            }else{
+                std::cerr<<"Expected integer value";
+                exit(EXIT_FAILURE);
             }
         }
     }

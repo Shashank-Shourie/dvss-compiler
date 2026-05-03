@@ -28,7 +28,7 @@ public:
         std::string buff;
 
         while(peek().has_value()){
-            std::cout<<peek().value()<<"\n";
+            // std::cout<<peek().value()<<"\n";
             if(std::isalpha(peek().value())){
                 // std::cout<<"D1"<<std::endl;
                 buff.push_back(consume());
@@ -75,7 +75,7 @@ public:
             }
         }
         m_index = 0;
-        std::cout<<"return";
+        // std::cout<<"return";
         return tokens;
     }
 
