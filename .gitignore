@@ -43,6 +43,8 @@ rules.ninja
 *.dylib
 *.lib
 *.pdb
+out
+out.asm
 
 # Debug / profiling
 *.dSYM/

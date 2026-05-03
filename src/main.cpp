@@ -4,73 +4,21 @@
 #include <optional>
 #include <vector>
 
-enum class TokenType{
-    _return,
-    int_lit,
-    semi
-};
-
-struct Token{
-    TokenType type;
-    std::optional<std::string> value{};
-};
-
-std::vector<Token> tokenize(const std::string& str){
-    std::vector<Token> tokens;
-
-    std::string buff;
-    for(int i=0;i<str.size();i++){
-        char c = str.at(i);
-        if(std::isalpha(c)){
-            buff.push_back(c);
-            i++;
-            while(std::isalnum(str.at(i))){
-                buff.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            if(buff=="return"){
-                tokens.push_back({.type = TokenType::_return});
-                buff.clear();
-            }else{
-                std::cerr<<"It aint return cuh!"<<std::endl;
-                exit(EXIT_FAILURE);
-            }
-        }else if(std::isdigit(c)){
-            buff.push_back(c);
-            i++;
-            while(std::isdigit(str.at(i))){
-                buff.push_back(str.at(i));
-                i++;
-            }
-            i--;
-            tokens.push_back({.type = TokenType::int_lit, .value = buff});
-            buff.clear();
-        }else if(std::isspace(c)){
-            continue;
-        }else if(c==';'){
-            tokens.push_back({.type = TokenType::semi});
-        }else{
-            std::cerr<<"U messed up bruh"<<std::endl;
-            exit(EXIT_FAILURE);
-        }
-    }
-    return tokens;
-}
+#include "./tokenization.hpp"
 
 std::string tokens_to_asm(const std::vector<Token>& tokens){
     std::stringstream output;
     output << "global _start\n_start:\n";
     for(int i=0;i<tokens.size();i++){
         const Token& token = tokens.at(i);
-        if(token.type == TokenType::_return){
+        if(token.type == TokenType::exit){
             if(i+1<tokens.size() && tokens.at(i+1).type == TokenType::int_lit){
                 if(i+2<tokens.size() && tokens.at(i+2).type == TokenType::semi){
                     output<<"  mov rax, 60\n";
                     output<<"  mov rdi, "<< tokens.at(i+1).value.value()<<"\n";
                     output<<"  syscall";
                 }else{
-                    std::cerr<<"Give the return value"<<std::endl;
+                    std::cerr<<"Give the exit value"<<std::endl;
                     exit(EXIT_FAILURE);
                 }
             }
@@ -94,7 +42,9 @@ int main(int argc, char* argv[]){
 
     std::string contents = contents_stream.str();                           //Converting the string stream to string
 
-    std::vector<Token> tokens =  tokenize(contents);
+    Tokenizer tokenizer(std::move(contents));
+
+    std::vector<Token> tokens =  tokenizer.tokenize();
 
     // std::cout<<tokens_to_asm(tokens)<<std::endl;
 
