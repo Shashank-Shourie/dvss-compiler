@@ -80,18 +80,18 @@ public:
     }
 
 private:
-    [[nodiscard]] std::optional<char> peek(int ahed = 0) const{
-        if(m_index+ahed >= m_src.length()){
+    [[nodiscard]] inline std::optional<char> peek(int ahead = 0) const{
+        if(m_index+ahead >= m_src.length()){
             return {};
         }else{
-            return m_src.at(m_index+ahed);
+            return m_src.at(m_index+ahead);
         }
     }
 
-    char consume(){
+    inline char consume(){
         return m_src.at(m_index++);
     }
 
     const std::string m_src;
-    int m_index=0;
+    size_t m_index=0;
 };
