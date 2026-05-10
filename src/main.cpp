@@ -30,14 +30,14 @@ int main(int argc, char* argv[]){
 
     Parser parser(std::move(tokens));                                       //A parser class to create a parse tree from tokens
 
-    std::optional<NodeExit> tree = parser.parse();                          //Creating a parse tree from tokens
+    std::optional<NodeProg> prog = parser.parse_prog();                     //Creating a parse tree from tokens
 
-    if(!tree.has_value()){                                                  //To check if the tree has been creted
-        std::cerr<<"No exit statement found"<<std::endl;
+    if(!prog.has_value()){                                                  //To check if the tree has been creted
+        std::cerr<<"Invalid Program"<<std::endl;
         exit(EXIT_FAILURE);
     }
 
-    Generator generator(tree.value());                                      //Generator class to generate assembly from the parse tree
+    Generator generator(prog.value());                                      //Generator class to generate assembly from the parse tree
 
     // std::cout<<tokens_to_asm(tokens)<<std::endl;
 
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
             std::cerr << "FAILED TO OPEN OUTPUT FILE\n";
             return EXIT_FAILURE;
         }
-        file<<generator.generate();                                         //Generates the assembly code
+        file<<generator.gen_prog();                                         //Generates the assembly code
         // std::cout<<"Written";
     }
 

@@ -8,7 +8,12 @@
 enum class TokenType{
     exit,
     int_lit,
-    semi
+    semi,
+    open_paren,
+    close_paren,
+    identifier,
+    let,
+    eq
 };
 
 struct Token{
@@ -43,10 +48,15 @@ public:
                     tokens.push_back({.type=TokenType::exit});
                     buff.clear();
                     continue;
+                }else if(buff=="let"){
+                    tokens.push_back({.type=TokenType::let});
+                    buff.clear();
+                    continue;
                 }else{
                     // std::cout<<buff<<"\n";
-                    std::cerr<<"Wrong Syntax"<<std::endl;
-                    exit(EXIT_FAILURE);
+                    tokens.push_back({.type=TokenType::identifier, .value = buff});
+                    buff.clear();
+                    continue;
                 }
             }else if(std::isdigit(peek().value())){
                 buff.push_back(consume());
@@ -58,9 +68,17 @@ public:
                 tokens.push_back({.type=TokenType::int_lit, .value=buff});
                 buff.clear();
                 continue;
+            }else if(peek().value() == '('){
+                consume();
+                tokens.push_back({.type=TokenType::open_paren});
+            }else if(peek().value() == ')'){
+                consume();
+                tokens.push_back({.type=TokenType::close_paren});
+            }else if(peek().value() == '='){
+                consume();
+                tokens.push_back({.type=TokenType::eq});
             }else if(peek().value() == ';'){
                 consume();
-                std::cout<<"Consumed"<<"\n";
                 tokens.push_back({.type=TokenType::semi});
                 buff.clear();
                 continue;
@@ -80,11 +98,11 @@ public:
     }
 
 private:
-    [[nodiscard]] inline std::optional<char> peek(int ahead = 0) const{
-        if(m_index+ahead >= m_src.length()){
+    [[nodiscard]] inline std::optional<char> peek(int offset = 0) const{
+        if(m_index+offset >= m_src.length()){
             return {};
         }else{
-            return m_src.at(m_index+ahead);
+            return m_src.at(m_index+offset);
         }
     }
 
